@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>米亞紙意手作坊</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1A1209;
+    --gold: #C9A84C;
+    --gold-light: #E8D5A0;
+    --gold-dim: #8B6914;
+    --card-bg: #2E2414;
+    --cream: #F5EDD6;
+    --text-muted: #A08850;
+    --border: rgba(201,168,76,0.35);
+    --border-hover: rgba(201,168,76,0.75);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--cream);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(26,18,9,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-logo {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    letter-spacing: .12em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: .06em;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .cart-btn {
+    background: none; border: 0.5px solid var(--border);
+    color: var(--gold); cursor: pointer;
+    padding: 6px 14px; border-radius: 2px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px; letter-spacing: .06em;
+    transition: all .2s; position: relative;
+  }
+  .cart-btn:hover { border-color: var(--gold); background: rgba(201,168,76,.08); }
+  .cart-count {
+    position: absolute; top: -6px; right: -6px;
+    background: var(--gold); color: var(--ink);
+    font-size: 10px; font-weight: 700;
+    width: 17px; height: 17px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    display: none;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 88vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 60%, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  /* SVG paper-fold watermark lines */
+  .hero-watermark {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.07;
+  }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: .25em;
+    color: var(--gold-dim); margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+  .hero-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 700;
+    letter-spacing: .18em;
+    line-height: 1.15;
+    color: var(--gold);
+    text-shadow: 0 0 60px rgba(201,168,76,.2);
+    margin-bottom: .6rem;
+  }
+  .hero-sub {
+    font-size: 13px; letter-spacing: .2em;
+    color: var(--gold-light); opacity: .7;
+    margin-bottom: 2.5rem;
+  }
+  .hero-tagline {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.05rem; letter-spacing: .1em;
+    color: var(--cream); opacity: .85;
+    margin-bottom: 3rem;
+    max-width: 420px;
+  }
+  .hero-tagline em { font-style: normal; color: var(--gold); }
+  .cta-btn {
+    display: inline-block;
+    border: 0.5px solid var(--gold);
+    color: var(--gold);
+    padding: 12px 36px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px; letter-spacing: .12em;
+    text-decoration: none;
+    border-radius: 1px;
+    transition: all .25s;
+    cursor: pointer; background: none;
+  }
+  .cta-btn:hover {
+    background: var(--gold);
+    color: var(--ink);
+  }
+  .hero-divider {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 1px; background: var(--border);
+  }
+
+  /* ── SECTION ── */
+  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.7rem; letter-spacing: .16em;
+    color: var(--gold); margin-bottom: .5rem;
+    text-align: center;
+  }
+  .section-rule {
+    width: 40px; height: 0.5px;
+    background: var(--gold-dim); margin: .8rem auto 2.8rem;
+  }
+
+  /* ── PRODUCT GRID ── */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .product-card {
+    background: var(--card-bg);
+    border: 0.5px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    transition: border-color .25s, transform .2s;
+    cursor: pointer;
+    display: flex; flex-direction: column;
+  }
+  .product-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-3px);
+  }
+
+  .product-img {
+    width: 100%; aspect-ratio: 3/4;
+    background: #241B0D;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem; position: relative; overflow: hidden;
+  }
+  .product-img::after {
+    content: '';
+    position: absolute; inset: 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .product-badge {
+    position: absolute; top: 10px; left: 10px;
+    background: var(--gold); color: var(--ink);
+    font-size: 10px; font-weight: 700; letter-spacing: .05em;
+    padding: 2px 8px; border-radius: 1px;
+  }
+
+  .product-body { padding: 1rem 1.1rem 1.3rem; flex: 1; display: flex; flex-direction: column; }
+  .product-name {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1rem; letter-spacing: .08em;
+    color: var(--cream); margin-bottom: .3rem;
+  }
+  .product-desc {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: .03em; line-height: 1.6;
+    margin-bottom: .9rem; flex: 1;
+  }
+  .product-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: auto;
+  }
+  .product-price {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.15rem; color: var(--gold);
+    letter-spacing: .05em;
+  }
+  .product-price span { font-size: 11px; color: var(--text-muted); }
+
+  .qty-row { display: flex; align-items: center; gap: 8px; }
+  .qty-btn {
+    width: 26px; height: 26px;
+    background: none; border: 0.5px solid var(--border);
+    color: var(--gold); cursor: pointer; border-radius: 1px;
+    font-size: 16px; line-height: 1;
+    transition: all .15s; display: flex; align-items: center; justify-content: center;
+  }
+  .qty-btn:hover { border-color: var(--gold); background: rgba(201,168,76,.1); }
+  .qty-display { font-size: 14px; color: var(--cream); min-width: 20px; text-align: center; }
+
+  .add-btn {
+    background: none; border: 0.5px solid var(--border);
+    color: var(--text-muted); cursor: pointer;
+    padding: 5px 12px; border-radius: 1px;
+    font-size: 12px; letter-spacing: .06em;
+    font-family: 'Noto Sans TC', sans-serif;
+    transition: all .2s;
+  }
+  .add-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .add-btn.added { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,.1); }
+
+  /* ── CART PANEL ── */
+  .cart-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,.6);
+    display: none; align-items: flex-start; justify-content: flex-end;
+  }
+  .cart-overlay.open { display: flex; }
+  .cart-panel {
+    width: min(420px, 100vw);
+    height: 100vh; overflow-y: auto;
+    background: #1E1408;
+    border-left: 0.5px solid var(--border);
+    padding: 2rem 1.5rem;
+    display: flex; flex-direction: column; gap: 1.2rem;
+  }
+  .cart-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 1rem; border-bottom: 0.5px solid var(--border);
+  }
+  .cart-header h2 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.1rem; letter-spacing: .12em; color: var(--gold);
+  }
+  .close-btn {
+    background: none; border: none; color: var(--text-muted);
+    cursor: pointer; font-size: 22px; line-height: 1;
+    transition: color .2s;
+  }
+  .close-btn:hover { color: var(--gold); }
+
+  .cart-item {
+    display: flex; gap: 1rem;
+    padding: .9rem 0; border-bottom: 0.5px solid rgba(201,168,76,.12);
+    align-items: center;
+  }
+  .cart-item-emoji { font-size: 2rem; min-width: 44px; text-align: center; }
+  .cart-item-info { flex: 1; }
+  .cart-item-name {
+    font-family: 'Noto Serif TC', serif; font-size: .9rem;
+    color: var(--cream); letter-spacing: .06em;
+  }
+  .cart-item-price { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .cart-item-qty { font-size: 12px; color: var(--gold-light); }
+  .remove-btn {
+    background: none; border: none; color: var(--text-muted);
+    cursor: pointer; font-size: 16px; transition: color .2s;
+  }
+  .remove-btn:hover { color: #e06060; }
+
+  .cart-empty { text-align: center; color: var(--text-muted); font-size: 13px; padding: 3rem 0; }
+
+  .cart-total {
+    border-top: 0.5px solid var(--border); padding-top: 1rem;
+    display: flex; justify-content: space-between;
+    font-family: 'Noto Serif TC', serif; font-size: 1.1rem;
+    color: var(--cream);
+  }
+  .cart-total strong { color: var(--gold); }
+
+  .checkout-btn {
+    display: block; width: 100%; text-align: center;
+    background: var(--gold); color: var(--ink);
+    border: none; cursor: pointer;
+    padding: 14px; font-family: 'Noto Serif TC', serif;
+    font-size: 15px; letter-spacing: .12em;
+    border-radius: 1px; transition: opacity .2s;
+  }
+  .checkout-btn:hover { opacity: .88; }
+
+  /* ── ORDER FORM ── */
+  .order-section {
+    max-width: 640px; margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+  .form-group { margin-bottom: 1.4rem; }
+  label {
+    display: block; font-size: 12px; letter-spacing: .1em;
+    color: var(--text-muted); margin-bottom: .5rem;
+  }
+  input, select, textarea {
+    width: 100%; padding: 10px 14px;
+    background: var(--card-bg);
+    border: 0.5px solid var(--border);
+    border-radius: 2px; color: var(--cream);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 14px; outline: none;
+    transition: border-color .2s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--gold); }
+  textarea { resize: vertical; min-height: 90px; }
+  select option { background: #2E2414; }
+
+  .submit-btn {
+    width: 100%; padding: 14px;
+    background: none; border: 0.5px solid var(--gold);
+    color: var(--gold); cursor: pointer;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px; letter-spacing: .12em;
+    border-radius: 1px; transition: all .25s;
+    margin-top: .8rem;
+  }
+  .submit-btn:hover { background: var(--gold); color: var(--ink); }
+
+  /* ── ABOUT ── */
+  .about-content {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    align-items: center;
+  }
+  .about-text h3 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.3rem; color: var(--gold);
+    letter-spacing: .1em; margin-bottom: 1rem;
+  }
+  .about-text p { color: var(--text-muted); font-size: 14px; line-height: 1.9; margin-bottom: 1rem; }
+  .about-text p em { font-style: normal; color: var(--cream); }
+  .about-visual {
+    background: var(--card-bg);
+    border: 0.5px solid var(--border);
+    aspect-ratio: 1; border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem;
+  }
+  .about-stats {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 1rem; margin-top: 2rem;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.8rem; color: var(--gold);
+  }
+  .stat-label { font-size: 11px; color: var(--text-muted); letter-spacing: .08em; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 0.5px solid var(--border);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    color: var(--text-muted); font-size: 12px; letter-spacing: .06em;
+  }
+  footer .footer-logo {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.1rem; color: var(--gold);
+    margin-bottom: .5rem;
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--card-bg); border: 0.5px solid var(--gold);
+    color: var(--gold-light); font-size: 13px; letter-spacing: .06em;
+    padding: 10px 22px; border-radius: 2px;
+    opacity: 0; transition: all .3s; z-index: 999; white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── SUCCESS MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,.7);
+    display: none; align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: #1E1408; border: 0.5px solid var(--gold);
+    border-radius: 2px; padding: 2.5rem 2rem;
+    text-align: center; max-width: 380px; width: 90%;
+  }
+  .modal-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .modal h3 {
+    font-family: 'Noto Serif TC', serif;
+    color: var(--gold); font-size: 1.2rem; letter-spacing: .12em;
+    margin-bottom: .6rem;
+  }
+  .modal p { color: var(--text-muted); font-size: 13px; line-height: 1.8; }
+  .modal-close {
+    margin-top: 1.5rem;
+    display: inline-block; padding: 10px 30px;
+    border: 0.5px solid var(--gold); color: var(--gold);
+    background: none; cursor: pointer; border-radius: 1px;
+    font-family: 'Noto Serif TC', serif; font-size: 13px; letter-spacing: .1em;
+    transition: all .2s;
+  }
+  .modal-close:hover { background: var(--gold); color: var(--ink); }
+
+  @media (max-width: 640px) {
+    .about-content { grid-template-columns: 1fr; gap: 2rem; }
+    .about-visual { aspect-ratio: 2/1; }
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    section { padding: 3.5rem 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">米亞紙意手作坊</a>
+  <ul class="nav-links">
+    <li><a href="#products">商品</a></li>
+    <li><a href="#order">下單</a></li>
+    <li><a href="#about">關於我們</a></li>
+  </ul>
+  <button class="cart-btn" onclick="openCart()">
+    購物車
+    <span class="cart-count" id="cartCount">0</span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <svg class="hero-watermark" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+    <line x1="0" y1="350" x2="1200" y2="350" stroke="#C9A84C" stroke-width="0.5"/>
+    <line x1="600" y1="0" x2="600" y2="700" stroke="#C9A84C" stroke-width="0.5"/>
+    <line x1="0" y1="0" x2="1200" y2="700" stroke="#C9A84C" stroke-width="0.5"/>
+    <line x1="1200" y1="0" x2="0" y2="700" stroke="#C9A84C" stroke-width="0.5"/>
+    <circle cx="600" cy="350" r="200" stroke="#C9A84C" stroke-width="0.5" fill="none"/>
+    <circle cx="600" cy="350" r="100" stroke="#C9A84C" stroke-width="0.5" fill="none"/>
+    <polygon points="600,150 750,300 700,500 500,500 450,300" stroke="#C9A84C" stroke-width="0.5" fill="none"/>
+  </svg>
+  <p class="hero-eyebrow">Taiwan · Handmade · Sacred</p>
+  <h1 class="hero-title">米亞紙意手作坊</h1>
+  <p class="hero-sub">Mia Paper Art Studio</p>
+  <p class="hero-tagline"><em>誠意，是看得見的東西</em></p>
+  <a href="#products" class="cta-btn">立即選購</a>
+  <div class="hero-divider"></div>
+</div>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <h2 class="section-title">精選商品</h2>
+  <div class="section-rule"></div>
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<!-- ORDER FORM -->
+<section id="order" style="background: rgba(46,36,20,0.35); max-width: 100%; padding: 5rem 2rem;">
+  <div class="order-section">
+    <h2 class="section-title">填寫訂單</h2>
+    <div class="section-rule"></div>
+    <div id="orderSummary" style="margin-bottom:2rem; display:none;">
+      <p style="font-size:12px; letter-spacing:.06em; color:var(--text-muted); margin-bottom:.8rem;">已選商品</p>
+      <div id="orderSummaryItems"></div>
+      <div style="border-top:.5px solid var(--border); margin-top:1rem; padding-top:1rem; text-align:right;">
+        <span style="font-family:'Noto Serif TC',serif; color:var(--gold);">合計：<strong id="orderTotal">NT$0</strong></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>姓名 *</label>
+      <input type="text" id="fname" placeholder="請輸入您的姓名">
+    </div>
+    <div class="form-group">
+      <label>聯絡電話 *</label>
+      <input type="tel" id="fphone" placeholder="09xx-xxx-xxx">
+    </div>
+    <div class="form-group">
+      <label>收貨地址</label>
+      <input type="text" id="faddress" placeholder="（宅配需填寫）">
+    </div>
+    <div class="form-group">
+      <label>取貨方式 *</label>
+      <select id="fdelivery">
+        <option value="">請選擇</option>
+        <option value="pickup">自取（台中大里）</option>
+        <option value="delivery">宅配</option>
+        <option value="temple">廟方代領</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>神明 / 使用場合</label>
+      <input type="text" id="focasion" placeholder="例：土地公、觀音媽、壽誕⋯">
+    </div>
+    <div class="form-group">
+      <label>備註</label>
+      <textarea id="fnote" placeholder="特殊需求、訂製說明⋯"></textarea>
+    </div>
+    <button class="submit-btn" onclick="submitOrder()">確認送出訂單</button>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <h2 class="section-title">關於米亞</h2>
+  <div class="section-rule"></div>
+  <div class="about-content">
+    <div class="about-text">
+      <h3>紙藝與信仰的交匯</h3>
+      <p>米亞紙意手作坊由<em>米亞（美怡）</em>創立，以臺灣傳統紙藝結合民間信仰，手工製作各式神明供品與紙藝花束。</p>
+      <p>每一件作品皆出自虔誠之心，從選材、摺疊到組裝，工序細緻，<em>讓誠意看得見</em>。</p>
+      <p>米亞紙意手作坊每筆訂單捐出 <em>10% 收益</em> 予慈善機構，以善業積累福德。</p>
+      <div class="about-stats">
+        <div class="stat"><div class="stat-num">10%</div><div class="stat-label">每單捐出善款</div></div>
+        <div class="stat"><div class="stat-num">手工</div><div class="stat-label">全程手作</div></div>
+        <div class="stat"><div class="stat-num">獲獎</div><div class="stat-label">文創競賽肯定</div></div>
+      </div>
+    </div>
+    <div class="about-visual">🪷</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">米亞紙意手作坊</div>
+  <p>IG @mia_0112_ya &nbsp;｜&nbsp; FB 米亞紙意手作 &nbsp;｜&nbsp; TikTok @mia_paperart</p>
+  <p style="margin-top:.4rem;">© 2025 米亞紙意手作坊 · 台中大里</p>
+</footer>
+
+<!-- CART PANEL -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCartOutside(event)">
+  <div class="cart-panel">
+    <div class="cart-header">
+      <h2>購物車</h2>
+      <button class="close-btn" onclick="closeCart()">×</button>
+    </div>
+    <div id="cartItems"></div>
+    <div id="cartTotalRow" style="display:none;" class="cart-total">
+      <span>合計</span>
+      <strong id="cartTotalAmount">NT$0</strong>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn" style="display:none;" onclick="goCheckout()">前往填寫訂單 →</button>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal">
+    <div class="modal-icon">🙏</div>
+    <h3>感謝您的訂購</h3>
+    <p>訂單已收到，米亞會盡快與您確認細節並安排製作。<br>如有急單，歡迎直接 IG / FB 私訊洽詢。</p>
+    <button class="modal-close" onclick="closeModal()">關閉</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const products = [
+  { id:1, name:'一桶金', emoji:'🪣', price:380, badge:'熱銷', desc:'土地公專屬供品，黃金紙折疊成桶狀，象徵財源滾滾，適合初一、十五或壽誕使用。' },
+  { id:2, name:'神明小花束', emoji:'💐', price:450, badge:'手作', desc:'金紙折成花朵，組成精緻花束，可供奉於神桌，傳遞最真誠的敬意。' },
+  { id:3, name:'好神花', emoji:'🌸', price:520, badge:'', desc:'授權製作，造型典雅的儀式花，適合各類神明祭典，色彩喜氣。' },
+  { id:4, name:'神明祝壽金紙蛋糕', emoji:'🎂', price:680, badge:'訂製', desc:'神明壽誕獻禮首選，以金紙手工疊成蛋糕造型，層次豐富，誠意滿滿。' },
+  { id:5, name:'花寶盒', emoji:'🎁', price:580, badge:'', desc:'西施娘娘主題禮盒，含折紙花朵與金紙擺飾，精緻包裝，節日贈禮皆宜。' },
+  { id:6, name:'敬獻小花盆', emoji:'🪴', price:350, badge:'', desc:'桌上型供花盆，以金紙折成花卉插入盆中，清雅供奉，長期擺放不凋謝。' },
+];
+
+let cart = {};
+
+function renderProducts() {
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = products.map(p => `
+    <div class="product-card">
+      <div class="product-img">
+        ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+        ${p.emoji}
+      </div>
+      <div class="product-body">
+        <p class="product-name">${p.name}</p>
+        <p class="product-desc">${p.desc}</p>
+        <div class="product-footer">
+          <span class="product-price">NT$${p.price}<span> / 件</span></span>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <div class="qty-row">
+              <button class="qty-btn" onclick="changeQty(${p.id},-1)">−</button>
+              <span class="qty-display" id="qty-${p.id}">1</span>
+              <button class="qty-btn" onclick="changeQty(${p.id},1)">＋</button>
+            </div>
+            <button class="add-btn" id="addbtn-${p.id}" onclick="addToCart(${p.id})">加入</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+const qtyState = {};
+products.forEach(p => qtyState[p.id] = 1);
+
+function changeQty(id, delta) {
+  qtyState[id] = Math.max(1, (qtyState[id]||1) + delta);
+  document.getElementById('qty-'+id).textContent = qtyState[id];
+}
+
+function addToCart(id) {
+  const p = products.find(x=>x.id===id);
+  const qty = qtyState[id]||1;
+  if (cart[id]) cart[id].qty += qty;
+  else cart[id] = { ...p, qty };
+  updateCartUI();
+  const btn = document.getElementById('addbtn-'+id);
+  btn.textContent = '已加入'; btn.classList.add('added');
+  setTimeout(()=>{ btn.textContent='加入'; btn.classList.remove('added'); }, 1200);
+  showToast(`已加入 ${p.name} ×${qty}`);
+}
+
+function updateCartUI() {
+  const items = Object.values(cart);
+  const total = items.reduce((s,i)=>s+i.price*i.qty, 0);
+  const count = items.reduce((s,i)=>s+i.qty, 0);
+
+  const countEl = document.getElementById('cartCount');
+  countEl.textContent = count;
+  countEl.style.display = count > 0 ? 'flex' : 'none';
+
+  const cartEl = document.getElementById('cartItems');
+  if (items.length === 0) {
+    cartEl.innerHTML = '<p class="cart-empty">購物車是空的</p>';
+    document.getElementById('cartTotalRow').style.display = 'none';
+    document.getElementById('checkoutBtn').style.display = 'none';
+  } else {
+    cartEl.innerHTML = items.map(i=>`
+      <div class="cart-item">
+        <span class="cart-item-emoji">${i.emoji}</span>
+        <div class="cart-item-info">
+          <p class="cart-item-name">${i.name}</p>
+          <p class="cart-item-price">NT$${i.price} × <span class="cart-item-qty">${i.qty}</span></p>
+        </div>
+        <button class="remove-btn" onclick="removeFromCart(${i.id})">×</button>
+      </div>
+    `).join('');
+    document.getElementById('cartTotalRow').style.display = 'flex';
+    document.getElementById('cartTotalAmount').textContent = 'NT$'+total;
+    document.getElementById('checkoutBtn').style.display = 'block';
+  }
+
+  // update order summary
+  const sumEl = document.getElementById('orderSummary');
+  if (items.length > 0) {
+    sumEl.style.display = 'block';
+    document.getElementById('orderSummaryItems').innerHTML = items.map(i=>`
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-muted);padding:4px 0;">
+        <span>${i.emoji} ${i.name} ×${i.qty}</span>
+        <span style="color:var(--gold-light);">NT$${i.price*i.qty}</span>
+      </div>
+    `).join('');
+    document.getElementById('orderTotal').textContent = 'NT$'+total;
+  } else {
+    sumEl.style.display = 'none';
+  }
+}
+
+function removeFromCart(id) {
+  delete cart[id];
+  updateCartUI();
+}
+
+function openCart() { document.getElementById('cartOverlay').classList.add('open'); }
+function closeCart() { document.getElementById('cartOverlay').classList.remove('open'); }
+function closeCartOutside(e) { if (e.target === document.getElementById('cartOverlay')) closeCart(); }
+function goCheckout() {
+  closeCart();
+  document.getElementById('order').scrollIntoView({behavior:'smooth'});
+}
+
+function submitOrder() {
+  const name = document.getElementById('fname').value.trim();
+  const phone = document.getElementById('fphone').value.trim();
+  const delivery = document.getElementById('fdelivery').value;
+  if (!name || !phone || !delivery) { showToast('請填寫必填欄位'); return; }
+  document.getElementById('successModal').classList.add('open');
+  cart = {};
+  updateCartUI();
+  ['fname','fphone','faddress','fdelivery','focasion','fnote'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.value = '';
+  });
+}
+
+function closeModal() { document.getElementById('successModal').classList.remove('open'); }
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2000);
+}
+
+renderProducts();
+updateCartUI();
+</script>
+</body>
+</html>
